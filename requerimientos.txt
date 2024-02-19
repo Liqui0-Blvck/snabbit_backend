@@ -1,0 +1,12 @@
+djangorestframework
+django-simple-history
+django==4.2.*
+drf-nested-routers
+django-cors-headers
+pandas
+pillow
+djangorestframework-simplejwt
+psycopg2-binary
+django-import-export
+daphne
+channel
