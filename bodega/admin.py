@@ -8,3 +8,4 @@ from simple_history.admin import SimpleHistoryAdmin
 class StockEnBodegaAdmin(SimpleHistoryAdmin):
   list_display = ['id','item', 'cantidad',]
   history_list_display = ['cantidad']
+  

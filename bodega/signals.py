@@ -16,10 +16,8 @@ def traspaso_invento_stockenbodega(sender, created, instance, **kwargs):
     
 @receiver(post_save, sender='ordenes_de_compra.OrdenDeCompra')
 def transpasa_cantidad_a_stockenbodega(sender, instance, **kwargs):
-  # print(instance.itemordendecompra_set.all())
   if instance.estado_oc == '5':
     for item in instance.itemordendecompra_set.all():
-      print(item.item.pk)
       stock_item = StockItemBodega.objects.get(item = item.item.pk)
       previo_stock = stock_item.cantidad
       nuevo_stock = stock_item.cantidad + item.unidad_de_compra
