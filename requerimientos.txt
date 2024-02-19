@@ -9,4 +9,4 @@ djangorestframework-simplejwt
 psycopg2-binary
 django-import-export
 daphne
-channel
+channels

@@ -14,7 +14,7 @@ def update_change_reason(sender, instance, created, **kwargs):
     change_reasons = []
     for item in instance.itemeninvento_set.all():
         change_reasons.append(
-            f"Se agregó el item {item.item} con una cantidad de {item.cantidad}"
+            f"Se agregó el item {item.item} con una cantidad de {item.cantidad} \n"
         )
 
     # Obtener el historial asociado a la instancia del invento y seleccionar el primer registro

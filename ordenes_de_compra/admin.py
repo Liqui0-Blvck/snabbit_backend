@@ -11,3 +11,6 @@ class ItemOCInline(admin.TabularInline):
 class OrdenDeCompraAdmin(ImportExportModelAdmin):
   list_display = ['nombre', 'numero_oc', 'fecha_orden']
   inlines = [ItemOCInline, ]
+  
+  
+
