@@ -21,12 +21,16 @@ class ItemEnGuiaSerializer(serializers.ModelSerializer):
 
     
 class GuiaSalidaSerializer(serializers.ModelSerializer):
-  articulo_en_guia = serializers.SerializerMethodField()
+  objetos_en_guia = serializers.SerializerMethodField()
+  estado_guia_label = serializers.SerializerMethodField()
   class Meta:
     model = GuiaDeSalida
     fields = '__all__'
   
-  def get_articulo_en_guia(self, obj):
+  def get_estado_guia_label(self, obj):
+    return obj.get_estado_guia_display()
+  
+  def get_objetos_en_guia(self, obj):
     articulo = ItemsEnGuia.objects.filter(guia_salida=obj)
     serializer = ItemEnGuiaSerializer(instance=articulo, many=True)
     return serializer.data

@@ -5,6 +5,8 @@ from .models import *
 from .serializers import *
 from items.models import *
 from invento.models import *
+import json
+
 # Create your views here.
 
 class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
@@ -19,8 +21,9 @@ class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
           guia_salida = guia_serializer.save()
 
           # Serializar y guardar los objetos en la guía de salida
-          objetos_en_guia_data = request.data.pop('objetos_en_guia', [])  # Extraer datos de los objetos en la guía
-          for objeto_data in objetos_en_guia_data:
+          objetos_guia = request.POST.get('objetos_en_guia', '[]')
+          objetos = json.loads(objetos_guia)
+          for objeto_data in objetos:
               # Asignar la guía de salida al objeto
               
               objeto_data['guia_salida'] = guia_salida.pk
@@ -48,12 +51,13 @@ class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer = self.get_serializer(instance, data = request.data)
     
     if serializer.is_valid():
-      objetos_guia = request.data.get('objetos_en_guia', [])
-      print(objetos_guia)
-      for objeto in objetos_guia:
+      objetos_guia = request.POST.get('objetos_en_guia', '[]')
+      objetos = json.loads(objetos_guia)
+      print(objeto)
+
+      for objeto in objetos:
         objeto_id = objeto.get('id')
-        print(objeto_id)
-        
+
         
         try:
           objeto_existe = ItemsEnGuia.objects.get(id=objeto_id)
