@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from core.models import *
 from .estados_modelos import *
+from simple_history.models import * 
 # Create your models here.
 
 def ruta_imagen_firma(instance, filename):
@@ -15,7 +16,11 @@ class GuiaDeSalida(ModeloBase):
   numero_guia = models.CharField(max_length=100, blank=True)
   nombre_receptor = models.CharField(max_length=255, blank=True, null=True)
   estado_guia = models.CharField(max_length=1, choices=ESTADO_GUIA, default='1')
-  foto_firma = models.ImageField(upload_to=ruta_imagen_firma, blank=True)
+  firma_encargado = models.ImageField(upload_to=ruta_imagen_firma, blank=True)
+  firma_recepcion = models.ImageField(upload_to=ruta_imagen_firma, blank=True)
+  historia = HistoricalRecords(
+    history_change_reason_field = models.TextField(null=True)
+  )
   
   def __str__(self):
     return f"guia {self.numero_guia}"

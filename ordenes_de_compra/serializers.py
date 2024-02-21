@@ -45,9 +45,6 @@ class OrdenDeCompraPutSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
       instance.estado_oc = validated_data.get('estado_oc', instance.estado_oc)
-      print("instancia de estado", instance.estado_oc, "\n")
-      
-      print("Instancia de booleano transferido", instance.tranferido)
 
       if instance.estado_oc == '5':
         instance.tranferido = True

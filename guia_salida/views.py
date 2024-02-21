@@ -9,6 +9,22 @@ import json
 
 # Create your views here.
 
+class GuiaSalidaUpdateAPIView(generics.UpdateAPIView):
+    queryset = GuiaDeSalida.objects.all()
+    serializer_class = GuiaSalidaPutSerializer
+    lookup_field = 'id'
+    
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data
+        serializer = self.get_serializer(instance, data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
+
 class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
   queryset = GuiaDeSalida.objects.all()
   serializer_class = GuiaSalidaSerializer
@@ -53,7 +69,6 @@ class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     if serializer.is_valid():
       objetos_guia = request.POST.get('objetos_en_guia', '[]')
       objetos = json.loads(objetos_guia)
-      print(objeto)
 
       for objeto in objetos:
         objeto_id = objeto.get('id')
@@ -84,7 +99,17 @@ class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     else:
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-  
+    
+  def destroy(self, request, *args, **kwargs):
+    guias_ids = request.data.get('ids', [])
+    if not guias_ids:
+        return Response({'error' : 'no se proporcionaron ids validos'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        self.get_queryset().filter(id__in=guias_ids).delete()
+        return Response({'success': 'Elimando con exito'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': f'Error al eliminar items: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ItemEnGuiaListCreateAPIView(generics.ListCreateAPIView):
   queryset = ItemsEnGuia.objects.all()
   serializer_class = ItemEnGuiaSerializer
