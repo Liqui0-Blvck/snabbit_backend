@@ -15,9 +15,9 @@ proveedores_router.register(r'sucursales', SucursalProveedorViewSet, basename='p
 
 urlpatterns = [
   path(r'', include(proveedores_router.urls)),
-  path('items/', ItemListCreateAPIView.as_view()),
-  path('item/<int:id>/', ItemUpdateDestroyAPIView.as_view()),
-  path('item/', ItemUpdateDestroyAPIView.as_view()),
+  path('items/', ItemListCreateAPIView.as_view(), name='list-and-create-items'),
+  path('item/<int:id>/', ItemUpdateDestroyAPIView.as_view(), name='update-item'),
+  path('item-delete/', ItemUpdateDestroyAPIView.as_view(), name='delete-many-items'),
   
 ]
 

@@ -9,7 +9,8 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
   path('', include(router.urls)),
-  path('contenedores/', ContenedorListCreateAPIView.as_view()),
-  path('contenedor/<int:id>/', ContenedorUpdateDestroyAPIView.as_view()),
-  path('historia/<int:pk>', HistorialAPIView.as_view())
+  path('contenedores/', ContenedorListCreateAPIView.as_view(), name='list-create-contenedores'),
+  path('contenedor/<int:id>/', ContenedorUpdateDestroyAPIView.as_view(), name='update-contenedor'),
+  path('contenedores-delete/', ContenedorUpdateDestroyAPIView.as_view(), name='delete-many-contenedores'),
+  path('historia/<int:pk>', HistorialAPIView.as_view(), name='historia-stock-items')
 ]

@@ -32,17 +32,21 @@ def transpasa_cantidad_a_stockenbodega(sender, instance, **kwargs):
 @receiver(post_save, sender='guia_salida.GuiaDeSalida')
 def transpasa_cantidad_a_stockenbodega(sender, instance, **kwargs):
   stock_objeto = None
+  objeto_nombre = None
   if instance.estado_guia == '5':
     for obj in instance.itemsenguia_set.all():
       print()
-      if obj.content_type == 13:
+      if obj.content_type.id == 13:
         stock_objeto = StockItemBodega.objects.get(item = obj.object_id)
-      elif obj.content_type == 31:
-        stock_objeto = StockInventoBodega.objects.get(invento = obj.object_id)  
+        objeto_nombre = stock_objeto.item.nombre
+        
+      elif obj.content_type.id == 31:
+        stock_objeto = StockInventoBodega.objects.get(invento = obj.object_id)
+        objeto_nombre = stock_objeto.invento.nombre  
       previo_stock = stock_objeto.cantidad
       nuevo_stock = stock_objeto.cantidad - obj.cantidad
       stock_objeto.cantidad = nuevo_stock
-      stock_objeto._change_reason = f'{obj.item.nombre} ha descendio su cantidad de {previo_stock} a {nuevo_stock} segun Guia de Salida{instance.pk}'
+      stock_objeto._change_reason = f'{objeto_nombre} ha descendio su cantidad de {previo_stock} a {nuevo_stock} segun Guia de Salida {instance.pk}'
       stock_objeto.save()
       
          

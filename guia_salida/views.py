@@ -67,15 +67,20 @@ class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer = self.get_serializer(instance, data = request.data)
     
     if serializer.is_valid():
-      objetos_guia = request.POST.get('objetos_en_guia', '[]')
+      objetos_guia = request.data.get('objetos_en_guia', '[]')
       objetos = json.loads(objetos_guia)
+      objeto_ids_in_request = [objeto.get('id') for objeto in objetos]
+      objetos_existentes_ids = list(instance.itemsenguia_set.values_list('id', flat=True))
+      items_to_delete_ids = set(objetos_existentes_ids) - set(objeto_ids_in_request)
+      ItemsEnGuia.objects.filter(id__in=items_to_delete_ids).delete()
 
       for objeto in objetos:
         objeto_id = objeto.get('id')
+        print(objeto_id)
 
-        
         try:
-          objeto_existe = ItemsEnGuia.objects.get(id=objeto_id)
+          objeto_existe = ItemsEnGuia.objects.get(pk=objeto_id)
+          print(objeto_existe)
           nuevo_objeto_id = objeto.get('id')
           if objeto_existe.content_type == 13:
             nuevo_item = Item.objects.get(id=nuevo_objeto_id)
