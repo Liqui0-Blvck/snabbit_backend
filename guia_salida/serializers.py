@@ -43,9 +43,6 @@ class GuiaSalidaPutSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
       instance.estado_guia = validated_data.get('estado_guia', instance.estado_guia )
-
-      # if instance.estado_oc == '5':
-      #   instance.tranferido = True
       instance.save()
 
       return instance

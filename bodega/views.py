@@ -39,7 +39,7 @@ class ItemEnContenedorViewSet(viewsets.ModelViewSet):
 
 class HistorialAPIView(APIView):
     def get(self, request, pk, *args, **kwargs):
-        objeto = StockItemBodega.objects.get(pk=pk)
+        objeto = StockItemBodega.objects.get(item=pk)
         historial = objeto.historia.all()
         serializer = HistorialSerializer(historial, many=True)
         return Response(serializer.data)
