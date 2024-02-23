@@ -13,7 +13,7 @@ class OrdenDeCompra(ModeloBase):
   proveedor = models.ForeignKey('items.Proveedor', on_delete=models.CASCADE)
   email_envia_oc = models.EmailField(max_length=100, blank=True, null=True)
   numero_cotizacion = models.CharField(max_length=100, blank=True, null=True)
-  sucursal = models.ForeignKey('items.SucursalProveedor', on_delete=models.CASCADE, default=0)
+  sucursal = models.ForeignKey('items.SucursalProveedor', on_delete=models.CASCADE, default=0) # type: ignore
   tranferido = models.BooleanField(default=False)
 
   

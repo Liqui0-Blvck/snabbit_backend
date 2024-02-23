@@ -3,8 +3,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from core.models import *
 from .estados_modelos import *
-from simple_history.models import * 
+from simple_history.models import HistoricalRecords 
 # Create your models here.
+import random, string
+
+def codigo_contenedor(length=6):
+    return  ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(length))
 
 def ruta_imagen_firma(instance, filename):
   return 'guia_salida/firmas/{0}/foto/{1}'.format(instance.destinatario, filename)
@@ -24,6 +28,11 @@ class GuiaDeSalida(ModeloBase):
   
   def __str__(self):
     return f"guia {self.numero_guia}"
+  
+  def save(self, *args, **kwargs):
+    if not self.numero_guia:
+        self.numero_guia = codigo_contenedor()
+    super(GuiaDeSalida, self).save(*args, **kwargs)
   
 class ItemsEnGuia(ModeloBase):
   content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
