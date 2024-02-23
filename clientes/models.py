@@ -21,7 +21,7 @@ class Clientes(ModeloBase):
   correo = models.EmailField()
   tipo_cliente = models.CharField(max_length=1, choices=TIPO_CLIENTE, default='1')
   estado_cliente = models.CharField(max_length=100, blank=True)
-  logo = models.ImageField(upload_to=ruta_imagen_logo)
+  logo = models.ImageField(upload_to=ruta_imagen_logo, blank=True, null=True)
   
   def __str__(self):
     return f"el cliente {self.nombre}"

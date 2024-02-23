@@ -49,11 +49,11 @@ class UsuarioUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     return Response(serializer.data)
   
   def destroy(self, request, *args, **kwargs):
-      equipos_ids = request.data.get('ids', [])
-      if not ordenes_ids:
+      usuarios_ids = request.data.get('ids', [])
+      if not usuarios_ids:
           return Response({'error' : 'no se proporcionaron ids validos'}, status=status.HTTP_400_BAD_REQUEST)
       try:
-          self.get_queryset().filter(id__in=ordenes_ids).delete()
+          self.get_queryset().filter(id__in=usuarios_ids).delete()
           return Response({'success': 'Elimando con exito'}, status=status.HTTP_200_OK)
       except Exception as e:
           return Response({'error': f'Error al eliminar items: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
@@ -151,6 +151,20 @@ class TicketUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
 class TicketTecnicoUpdateAPIView(generics.UpdateAPIView):
   queryset = Ticket.objects.all()
   serializer_class = TicketTecnicoUpdate
+  lookup_field = 'id'
+  
+  def update(self, request, *args, **kwargs):
+    instance = self.get_object()
+    serializer = self.get_serializer(instance, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    
+    self.perform_update(serializer)
+
+    return Response(serializer.data)
+  
+class TicketEstadoUpdateAPIView(generics.UpdateAPIView):
+  queryset = Ticket.objects.all()
+  serializer_class = TicketEstadoUpdate
   lookup_field = 'id'
   
   def update(self, request, *args, **kwargs):

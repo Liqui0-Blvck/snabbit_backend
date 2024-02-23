@@ -73,6 +73,17 @@ class TicketTecnicoUpdate(serializers.ModelSerializer):
       instance.tecnico = validated_data.get('tecnico', instance.tecnico)
       instance.save()
       return instance
+    
+class TicketEstadoUpdate(serializers.ModelSerializer):
+  class Meta:
+    model = Ticket
+    fields = ['estado']
+    
+  def update(self, instance, validated_data):
+    print(instance.estado)
+    instance.estado = validated_data.get('estado', instance.estado)
+    instance.save()
+    return instance
 
     
 class SolicitudTicketSerializer(serializers.ModelSerializer):
