@@ -18,6 +18,7 @@ urlpatterns = [
   path('items/', ItemListCreateAPIView.as_view(), name='list-and-create-items'),
   path('item/<int:id>/', ItemUpdateDestroyAPIView.as_view(), name='update-item'),
   path('item-delete/', ItemUpdateDestroyAPIView.as_view(), name='delete-many-items'),
+  path('categoria-delete/', CategoriaRetrieveDeleteAPIView.as_view(), name='delete-many-categorias')
   
 ]
 

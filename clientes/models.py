@@ -23,6 +23,10 @@ class Clientes(ModeloBase):
   estado_cliente = models.CharField(max_length=100, blank=True)
   logo = models.ImageField(upload_to=ruta_imagen_logo, blank=True, null=True)
   
+  class Meta:
+    verbose_name = "cliente"
+    verbose_name_plural = "clientes"
+  
   def __str__(self):
     return f"el cliente {self.nombre}"
   

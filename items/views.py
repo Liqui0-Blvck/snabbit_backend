@@ -10,15 +10,22 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     serializer_class = CategoriaSerializer
     # permission_classes = [permissions.IsAuthenticated]
     
+    
+
+class CategoriaRetrieveDeleteAPIView(generics.RetrieveDestroyAPIView):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    
     def destroy(self, request, *args, **kwargs):
-        items_ids = request.data.get('ids', [])
-        if not items_ids:
+        categorias_ids = request.data.get('ids', [])
+        if not categorias_ids:
             return Response({'error' : 'no se proporcionaron ids validos'}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            self.get_queryset().filter(id__in=items_ids).delete()
+            self.get_queryset().filter(id__in=categorias_ids).delete()
             return Response({'success': 'Elimando con exito'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': f'Error al eliminar items: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+
 
 class ProveedorViewSet(viewsets.ModelViewSet):
     queryset = Proveedor.objects.all()

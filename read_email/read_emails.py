@@ -31,6 +31,7 @@ def read_emails():
         sender = msg['from']
 
         # Crear un objeto Ticket y guardar en la base de datos
+        
 
     # Cerrar la conexión
     mail.close()

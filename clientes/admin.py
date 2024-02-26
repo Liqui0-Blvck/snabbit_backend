@@ -6,3 +6,7 @@ from .models import *
 class EquipoUsuarioAdmin(admin.ModelAdmin):
   list_display = ['id', 'usuario', 'equipo']
   
+@admin.register(Clientes)
+class ClienteAdmin(admin.ModelAdmin):
+  list_display = [id, 'nombre', 'tipo_cliente', 'estado_cliente']
+    

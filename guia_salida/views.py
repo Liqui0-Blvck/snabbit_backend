@@ -23,6 +23,7 @@ class GuiaSalidaUpdateAPIView(generics.UpdateAPIView):
 
         return Response(serializer.data)
 
+
 class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
   queryset = GuiaDeSalida.objects.all()
   serializer_class = GuiaSalidaSerializer
@@ -36,15 +37,16 @@ class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
           objetos_guia = request.POST.get('objetos_en_guia', '[]')
           objetos = json.loads(objetos_guia)
           for objeto_data in objetos:
+            print(objeto_data)
               
-              objeto_data['guia_salida'] = guia_salida.pk
-              objeto_serializer = ItemEnGuiaSerializer(data=objeto_data)
-              if objeto_serializer.is_valid():
-                  objeto_serializer.save()
-              else:
-                  
-                  guia_salida.delete()
-                  return Response(objeto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            objeto_data['guia_salida'] = guia_salida.pk
+            objeto_serializer = ItemEnGuiaSerializer(data=objeto_data)
+            if objeto_serializer.is_valid():
+                objeto_serializer.save()
+            else:
+                
+                guia_salida.delete()
+                return Response(objeto_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
           return Response(guia_serializer.data, status=status.HTTP_201_CREATED)
       else:
@@ -112,3 +114,11 @@ class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ItemEnGuiaListCreateAPIView(generics.ListCreateAPIView):
   queryset = ItemsEnGuia.objects.all()
   serializer_class = ItemEnGuiaSerializer
+
+class ContentTypesItemsEnGuiaAPIView(generics.ListAPIView):
+  queryset = ContentType.objects.all()
+  serializer_class = ContentTypeItemsEnGuia
+  
+  def get_queryset(self):
+    models = ['item', 'invento']
+    return ContentType.objects.filter(model__in=models)

@@ -22,6 +22,7 @@ class GuiaDeSalida(ModeloBase):
   estado_guia = models.CharField(max_length=1, choices=ESTADO_GUIA, default='1')
   firma_encargado = models.ImageField(upload_to=ruta_imagen_firma, blank=True)
   firma_recepcion = models.ImageField(upload_to=ruta_imagen_firma, blank=True)
+  elementos = models.ManyToManyField('self', through='guia_salida.ItemsEnGuia')
   historia = HistoricalRecords(
     history_change_reason_field = models.TextField(null=True)
   )
@@ -35,7 +36,8 @@ class GuiaDeSalida(ModeloBase):
     super(GuiaDeSalida, self).save(*args, **kwargs)
   
 class ItemsEnGuia(ModeloBase):
-  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+  opciones = models.Q(app_label = 'item', model = 'item') | models.Q(app_label = 'invento', model = 'invento')
+  content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=opciones)
   object_id = models.PositiveIntegerField()
   content_object = GenericForeignKey('content_type', 'object_id')
   guia_salida = models.ForeignKey(GuiaDeSalida, on_delete=models.CASCADE)

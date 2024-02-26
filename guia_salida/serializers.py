@@ -14,10 +14,18 @@ class ItemEnGuiaSerializer(serializers.ModelSerializer):
     invento = Invento.objects.filter(id=obj.object_id)
     if obj.content_type.id == 13:
       serializer = ItemSerializer(instance = item, many=True)
-      return serializer.data
+      item_data_dict = {}
+      for objeto in serializer.data:
+          item_data_dict['id'] = objeto['id']
+          item_data_dict['nombre'] = objeto['nombre'] 
+      return [item_data_dict]
+    
     elif obj.content_type.id == 31:
       serializer = InventoSerializer(instance = invento, many=True)
-      return serializer.data
+      invento_data_dict = {}
+      for objeto in serializer.data:
+        invento_data_dict[objeto['id']] = objeto['nombre']
+      return [item_data_dict]
 
     
 class GuiaSalidaSerializer(serializers.ModelSerializer):
@@ -46,3 +54,9 @@ class GuiaSalidaPutSerializer(serializers.ModelSerializer):
       instance.save()
 
       return instance
+
+
+class ContentTypeItemsEnGuia(serializers.ModelSerializer):
+  class Meta:
+    model = ContentType
+    fields = '__all__'
