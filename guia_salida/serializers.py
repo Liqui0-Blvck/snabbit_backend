@@ -12,10 +12,10 @@ class ItemEnGuiaSerializer(serializers.ModelSerializer):
   def get_articulo(self, obj):
     item = Item.objects.filter(id=obj.object_id)
     invento = Invento.objects.filter(id=obj.object_id)
-    if obj.content_type.model == 'item':
+    if obj.content_type.id == 13:
       serializer = ItemSerializer(instance = item, many=True)
       return serializer.data
-    elif obj.content_type.model == 'invento':
+    elif obj.content_type.id == 31:
       serializer = InventoSerializer(instance = invento, many=True)
       return serializer.data
 
