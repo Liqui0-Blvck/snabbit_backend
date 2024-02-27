@@ -34,15 +34,17 @@ class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
       if guia_serializer.is_valid():
           guia_salida = guia_serializer.save()
 
-          objetos_guia = request.POST.get('objetos_en_guia', '[]')
+          objetos_guia = request.data.get('objetos_en_guia', '[]')
           objetos = json.loads(objetos_guia)
           for objeto_data in objetos:
             print(objeto_data)
-              
+            ct = ContentType.objects.get(pk=objeto_data['content_type'])
+
             objeto_data['guia_salida'] = guia_salida.pk
             objeto_serializer = ItemEnGuiaSerializer(data=objeto_data)
+            
             if objeto_serializer.is_valid():
-                objeto_serializer.save()
+                objeto_serializer.save(content_type = ct, object_id = objeto_serializer.validated_data['object_id'])
             else:
                 
                 guia_salida.delete()
@@ -50,7 +52,6 @@ class GuiaDeSalidaListCreateAPIView(generics.ListCreateAPIView):
 
           return Response(guia_serializer.data, status=status.HTTP_201_CREATED)
       else:
-
           return Response(guia_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GuiaDeSalidaUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):

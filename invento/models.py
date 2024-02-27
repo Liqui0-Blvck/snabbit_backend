@@ -16,6 +16,10 @@ class Invento(ModeloBase):
   historia = HistoricalRecords(
     history_change_reason_field=models.TextField(null=True)
   )
+  
+  class Meta:
+    verbose_name_plural = 'inventos'
+  
   def __str__(self):
     return f'invento {self.nombre}'
   

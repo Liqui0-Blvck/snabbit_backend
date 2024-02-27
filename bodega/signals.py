@@ -42,19 +42,25 @@ def transpasa_cantidad_a_stockenbodega(sender, instance, **kwargs):
   
   if instance.estado_guia == '5':
     for obj in instance.itemsenguia_set.all():
-      print(obj.content_type.model)
-      # if obj.content_type == ct_item:
-      #   stock_objeto = StockItemBodega.objects.get(item = obj.object_id)
-      #   objeto_nombre = stock_objeto.item.nombre
-        
-      # elif obj.content_type == ct_invento:
-      #   stock_objeto = StockInventoBodega.objects.get(invento = obj.object_id)
-      #   objeto_nombre = stock_objeto.invento.nombre  
-      # previo_stock = stock_objeto.cantidad
-      # nuevo_stock = stock_objeto.cantidad - obj.cantidad
-      # stock_objeto.cantidad = nuevo_stock
-      # stock_objeto._change_reason = f'{objeto_nombre} ha descendio su cantidad de {previo_stock} a {nuevo_stock} segun Guia de Salida {instance.pk}'
-      # stock_objeto.save()
+      # print(obj.content_type.model)
+      if obj.content_type == ct_item:
+        stock_objeto = StockItemBodega.objects.get(item = obj.object_id)
+        objeto_nombre = stock_objeto.item.nombre
+      elif obj.content_type == ct_invento:
+        stock_objeto = StockInventoBodega.objects.get(invento = obj.object_id)
+        objeto_nombre = stock_objeto.invento.nombre  
+        for item in stock_objeto.invento.itemeninvento_set.all():
+          stock_item = StockItemBodega.objects.get(item = item.item.pk)
+          previo_stock = stock_item.cantidad
+          nuevo_stock = stock_item.cantidad - item.cantidad
+          stock_item.cantidad = nuevo_stock
+          stock_item._change_reason = f'{stock_item.item} ha descendido su cantidad de {previo_stock} a {nuevo_stock}  segun Guia de salida {instance.pk} por medio del invento "{objeto_nombre}"'
+          stock_item.save()
+      previo_stock = stock_objeto.cantidad
+      nuevo_stock = stock_objeto.cantidad - obj.cantidad
+      stock_objeto.cantidad = nuevo_stock
+      stock_objeto._change_reason = f'{objeto_nombre} ha descendio su cantidad de {previo_stock} a {nuevo_stock} segun Guia de Salida {instance.pk}'
+      stock_objeto.save()
       
          
       

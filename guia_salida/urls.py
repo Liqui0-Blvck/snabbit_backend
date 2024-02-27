@@ -9,3 +9,4 @@ urlpatterns = [
     path('item_guia/', ItemEnGuiaListCreateAPIView.as_view()),
     path('content-types/', ContentTypesItemsEnGuiaAPIView.as_view())
 ]
+    

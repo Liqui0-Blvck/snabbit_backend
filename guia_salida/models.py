@@ -36,7 +36,7 @@ class GuiaDeSalida(ModeloBase):
     super(GuiaDeSalida, self).save(*args, **kwargs)
   
 class ItemsEnGuia(ModeloBase):
-  opciones = models.Q(app_label = 'item', model = 'item') | models.Q(app_label = 'invento', model = 'invento')
+  opciones = models.Q(app_label = 'items', model = 'item') | models.Q(app_label = 'invento', model = 'invento')
   content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=opciones)
   object_id = models.PositiveIntegerField()
   content_object = GenericForeignKey('content_type', 'object_id')

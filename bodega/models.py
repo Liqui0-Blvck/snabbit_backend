@@ -35,15 +35,19 @@ class Contenedor(ModeloBase):
 class StockItemBodega(ModeloBase):
     cantidad = models.PositiveIntegerField(default=0)
     item = models.OneToOneField('items.Item', on_delete=models.CASCADE)
-    historia = Historia()
+    historia = Historia(
+        history_change_reason_field = models.TextField(null=True)
+    )
     
     def __str__(self):
-        return 'Soy estoy en bodega di hola'
+        return f'{self.item}'
     
 class StockInventoBodega(ModeloBase):
     cantidad = models.PositiveIntegerField(default=0)
     invento = models.OneToOneField('invento.Invento', on_delete=models.CASCADE)
-    historia = Historia()
+    historia = Historia(
+        history_change_reason_field = models.TextField(null=True)
+    )
     
 
 class ItemEnContenedor(ModeloBase):
