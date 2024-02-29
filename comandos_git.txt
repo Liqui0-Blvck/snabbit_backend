@@ -1,0 +1,5 @@
+eliminar la cache del repositorio y preparar
+
+git rm -rf --cached .  
+git add .
+

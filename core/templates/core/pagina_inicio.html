@@ -1,0 +1,15 @@
+{% extends 'base/inicio.html' %}
+{% load static %}
+{% block titulo_pagina %}Inicio{% endblock titulo_pagina %}
+{% block contenido_web %}
+
+
+<h1>Hola</h1>
+<div id="like_button_container"></div>
+
+{% endblock contenido_web %}
+
+{% block script %}
+<script src="{% static 'react/like_button.js' %}"></script>
+{% endblock script %}
+
