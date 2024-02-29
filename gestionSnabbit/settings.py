@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     
     'core.apps.CoreConfig',   
     'cuentas.apps.CuentasConfig', 
-    'bd_ciudades', 
+    'bd_ciudades',
+    'clientes.apps.ClientesConfig',
     
     ## APPS de Mejoras 
     'django_extensions',
