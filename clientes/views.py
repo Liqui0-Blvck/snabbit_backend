@@ -3,12 +3,14 @@ from rest_framework import filters, generics, status
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
+from rest_framework.permissions import *
 
 # Create your views here.
 
 class ClienteListCreateAPIView(generics.ListCreateAPIView):
   queryset = Cliente.objects.all()
   serializer_class = ClientesSerializer
+  # permission_classes = [DjangoModelPermissions]
   
 class ClienteUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
   queryset = Cliente.objects.all()
